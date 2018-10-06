@@ -4,10 +4,11 @@ from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
 
+
 class IMDBScraper:
 
     page_size = 100
-
+    movie_index = 0
 
     def simple_get(self, url):
         """
@@ -45,7 +46,7 @@ class IMDBScraper:
         print(e)
         
     # get list of movie full cast and crew list urls
-    def scrape_full_cc(self, page):
+    def get_cast_and_crew_urls(self, page):
         raw_html = self.simple_get(page)
         html = BeautifulSoup(raw_html, 'html.parser')
         url_count = 0
@@ -59,7 +60,41 @@ class IMDBScraper:
                     path_elements = a['href'].split("/")
                     full_cc_urls.append(root_path + path_elements[2] + tail_path)
         return full_cc_urls
-    
+
+    def get_imdb_page(self, num):
+        return 'https://www.imdb.com/list/ls057823854/?sort=list_order,asc&st_dt=&mode=detail&page=' + str(num)
+
+
+    #creates Movie object with title and cast/crew list as objects
+    def scrape_movie(self, url):
+        raw_html = scarper.simple_get(url) #might be an issue? can I use scarper to call a function inside the class that it's the type of?
+        html = BeautifulSoup(raw_html, 'html.parser')
+
+        personnel_list = []
+        num_cast_members = 20
+
+        movie_title = html.find('div', class_='parent').h3.a.text
+
+        # gets all crew members in first ten tables (all crew personnel down to makeup
+        for crew_table in html.find_all(class_="simpleTable simpleCreditsTable")[:10]:
+            for a in crew_table.find_all('a'):
+                if a.text[1:-1] not in personnel_list:
+                    personnel_list.append(a.text[1:-1])
+
+        # gets specific number oc cast members, and adds to the personnel list
+        for tr in html.find_all('tr'):
+            for td in tr.find_all('td', class_='primary_photo'):
+                if num_cast_members > 0:
+                    personnel_list.append(td.a.img['title'])
+                num_cast_members -= 1
+
+        #CREATE MOVIE OBJECT
+        print(self.movie_index, end=" ")
+        print(movie_title, end=" ")
+        print(personnel_list)
+        # CREATE MOVIE OBJECT
+
+        self.movie_index += 1
 
 class Film:
     title = ""
@@ -86,8 +121,8 @@ class Film:
 
 
 
-page = "https://www.imdb.com/list/ls057823854/?sort=list_order,asc&st_dt=&mode=detail&page=1"
 scarper = IMDBScraper()
+<<<<<<< HEAD
 full_cc_urls = scarper.scrape_full_cc(page)
 for url in full_cc_urls:
     print(url)
@@ -99,3 +134,13 @@ print(f.getIndex())
 print(f.getPersonnelList())
         
         
+=======
+cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(1)) #will need to loop through pages
+
+
+for url in cast_and_crew_url_list:
+    #should get a list of cast and crew for each url
+    scarper.scrape_movie(url)
+
+    
+>>>>>>> 787bbda662c4e4f341c06003409cfca9e15594fa
