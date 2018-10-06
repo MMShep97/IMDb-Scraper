@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class IMDBScraper:
 
-    page_size = 100
+    page_size = 10
     movie_index = 0
     movie_list = []
 
@@ -98,7 +98,38 @@ class IMDBScraper:
         self.movie_index += 1
 
 
+
+class Film:
+    title = ""
+    index = 0
+    personnel_list = []
+    similarity_list = []
+    
+    def __init__(self, title, index, personnel_list):
+        self.title = title
+        self.index = index
+        self.personnel_list = personnel_list
+        
+    def getTitle(self):
+        return self.title
+    
+    def getIndex(self):
+        return self.index
+    
+    def getPersonnelList(self):
+        return self.personnel_list
+    
+    def getSimilarityList(self):
+        return self.similarity_list
+
+
+
 scarper = IMDBScraper()
+
+f = Film("golf film", 0, [1, 2, 3])
+print(f.getTitle())
+print(f.getIndex())
+print(f.getPersonnelList())
 
 for i in range(1, 2):  # (i = 0: i < X; i++)
     cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(i))
