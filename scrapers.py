@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class IMDBScraper:
 
-    page_size = 100
+    page_size = 10
     movie_index = 0
 
     def simple_get(self, url):
@@ -96,6 +96,8 @@ class IMDBScraper:
 
         self.movie_index += 1
 
+
+
 class Film:
     title = ""
     index = 0
@@ -122,9 +124,8 @@ class Film:
 
 
 scarper = IMDBScraper()
-<<<<<<< HEAD
-full_cc_urls = scarper.scrape_full_cc(page)
-for url in full_cc_urls:
+cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(1))
+for url in cast_and_crew_url_list:
     print(url)
     
 
@@ -132,9 +133,6 @@ f = Film("golf film", 0, [1, 2, 3])
 print(f.getTitle())
 print(f.getIndex())
 print(f.getPersonnelList())
-        
-        
-=======
 cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(1)) #will need to loop through pages
 
 
@@ -142,5 +140,3 @@ for url in cast_and_crew_url_list:
     #should get a list of cast and crew for each url
     scarper.scrape_movie(url)
 
-    
->>>>>>> 787bbda662c4e4f341c06003409cfca9e15594fa
