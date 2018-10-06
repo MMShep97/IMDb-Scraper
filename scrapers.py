@@ -9,6 +9,7 @@ class IMDBScraper:
 
     page_size = 100
     movie_index = 0
+    movie_list = []
 
     def simple_get(self, url):
         """
@@ -92,17 +93,20 @@ class IMDBScraper:
         print(self.movie_index, end=" ")
         print(movie_title, end=" ")
         print(personnel_list)
-        # CREATE MOVIE OBJECT
 
+        #Add to movie_list
         self.movie_index += 1
 
 
 scarper = IMDBScraper()
-cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(1)) #will need to loop through pages
 
+for i in range(1, 2):  # (i = 0: i < X; i++)
+    cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(i))
 
-for url in cast_and_crew_url_list:
-    #should get a list of cast and crew for each url
-    scarper.scrape_movie(url)
+    #for the 100 movies on the current page
+    for url in cast_and_crew_url_list:
 
-    
+        #create movie object
+        scarper.scrape_movie(url)
+
+for movie1 in scarper.movie_list:
