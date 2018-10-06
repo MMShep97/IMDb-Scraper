@@ -61,14 +61,41 @@ class IMDBScraper:
         return full_cc_urls
     
 
+class Film:
+    title = ""
+    index = 0
+    personnel_list = []
+    similarity_list = []
+    
+    def __init__(self, title, index, personnel_list):
+        self.title = title
+        self.index = index
+        self.personnel_list = personnel_list
+        
+    def getTitle(self):
+        return self.title
+    
+    def getIndex(self):
+        return self.index
+    
+    def getPersonnelList(self):
+        return self.personnel_list
+    
+    def getSimilarityList(self):
+        return self.similarity_list
+
+
 
 page = "https://www.imdb.com/list/ls057823854/?sort=list_order,asc&st_dt=&mode=detail&page=1"
 scarper = IMDBScraper()
 full_cc_urls = scarper.scrape_full_cc(page)
 for url in full_cc_urls:
     print(url)
+    
 
-
-
+f = Film("golf film", 0, [1, 2, 3])
+print(f.getTitle())
+print(f.getIndex())
+print(f.getPersonnelList())
         
         
