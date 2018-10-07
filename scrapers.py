@@ -122,13 +122,22 @@ class Film:
 
 
 
+
+
+# Main
+        
+def compareMovies(movie1, movie2):
+    num_similarities = 0
+    for person1 in movie1.personnel_list:
+        for person2 in movie2.personnel_list:
+            if person1 == person2:
+                num_similarities += 1
+
+    movie1.similarity_list[movie2.index] = num_similarities
+    movie2.similarity_list[movie1.index] = num_similarities
+
+
 scarper = IMDBScraper()
-
-f = Film("golf film", 0, [1, 2, 3])
-print(f.getTitle())
-print(f.getIndex())
-print(f.getPersonnelList())
-
 for i in range(1, 2):  # (i = 0: i < X; i++)
     cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(i))
 
@@ -138,4 +147,9 @@ for i in range(1, 2):  # (i = 0: i < X; i++)
         #create movie object
         scarper.scrape_movie(url)
 
-#for movie1 in scarper.movie_list:
+
+for mov1 in range(0, len(scarper.movie_list)):
+    for mov2 in range(mov1, len(scarper.movie_list)):
+        compareMovies(scarper.movie_list[mov1], scarper.movie_list[mov2])
+        
+        
