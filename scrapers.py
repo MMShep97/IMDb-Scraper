@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 class IMDBScraper:
 
     page_size = 10
+    num_pages = 2
+    num_movies = num_pages * page_size
     movie_index = 0
     movie_list = []
 
@@ -90,9 +92,7 @@ class IMDBScraper:
                 num_cast_members -= 1
 
         #CREATE MOVIE OBJECT
-        print(self.movie_index, end=" ")
-        print(movie_title, end=" ")
-        print(personnel_list)
+        self.movie_list.append(Film(movie_title, self.movie_index, personnel_list, [None]*self.num_movies))
 
         #Add to movie_list
         self.movie_index += 1
@@ -105,10 +105,11 @@ class Film:
     personnel_list = []
     similarity_list = []
     
-    def __init__(self, title, index, personnel_list):
+    def __init__(self, title, index, personnel_list, similarity_list):
         self.title = title
         self.index = index
         self.personnel_list = personnel_list
+        self.similarity_list = similarity_list
         
     def getTitle(self):
         return self.title
@@ -123,6 +124,11 @@ class Film:
         return self.similarity_list
 
 
+
+
+
+# Main
+        
 def compareMovies(movie1, movie2):
     num_similarities = 0
     for person1 in movie1.personnel_list:
@@ -136,10 +142,7 @@ def compareMovies(movie1, movie2):
 
 scarper = IMDBScraper()
 
-
-
-
-for i in range(1, 2):  # (i = 0: i < X; i++)
+for i in range(1, 1+scarper.num_pages):  # (i = 0: i < X; i++)
     cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(i))
 
     #for the 100 movies on the current page
@@ -152,3 +155,7 @@ for i in range(1, 2):  # (i = 0: i < X; i++)
 for mov1 in range(0, len(scarper.movie_list)):
     for mov2 in range(mov1, len(scarper.movie_list)):
         compareMovies(scarper.movie_list[mov1], scarper.movie_list[mov2])
+
+
+for movie in scarper.movie_list:
+    print(movie.similarity_list)
