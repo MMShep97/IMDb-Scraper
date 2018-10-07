@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 class IMDBScraper:
 
     page_size = 10
+    num_pages = 1
     movie_index = 0
     movie_list = []
 
@@ -138,7 +139,7 @@ def compareMovies(movie1, movie2):
 
 
 scarper = IMDBScraper()
-for i in range(1, 2):  # (i = 0: i < X; i++)
+for i in range(1, 1 + num_pages):  # (i = 0: i < X; i++)
     cast_and_crew_url_list = scarper.get_cast_and_crew_urls(scarper.get_imdb_page(i))
 
     #for the 100 movies on the current page
@@ -152,4 +153,4 @@ for mov1 in range(0, len(scarper.movie_list)):
     for mov2 in range(mov1, len(scarper.movie_list)):
         compareMovies(scarper.movie_list[mov1], scarper.movie_list[mov2])
         
-        
+    
