@@ -3,12 +3,12 @@ from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
-
+import time
 
 class IMDBScraper:
 
-    page_size = 10
-    num_pages = 2
+    page_size = 100
+    num_pages = 10
     num_movies = num_pages * page_size
     movie_index = 0
     movie_list = []
@@ -94,6 +94,8 @@ class IMDBScraper:
         #CREATE MOVIE OBJECT
         self.movie_list.append(Film(movie_title, self.movie_index, personnel_list, [None]*self.num_movies))
 
+        print(self.movie_index)
+
         #Add to movie_list
         self.movie_index += 1
 
@@ -128,6 +130,8 @@ class Film:
 
 
 # Main
+
+start = time.time()
         
 def compareMovies(movie1, movie2):
     num_similarities = 0
@@ -157,5 +161,28 @@ for mov1 in range(0, len(scarper.movie_list)):
         compareMovies(scarper.movie_list[mov1], scarper.movie_list[mov2])
 
 
-for movie in scarper.movie_list:
-    print(movie.similarity_list)
+#prints matrix
+# for movie in scarper.movie_list:
+#     print(movie.similarity_list)
+
+pair_list = [0]
+
+for row in range(0, scarper.num_movies):
+
+    # for some movie
+    for sim_sum_spot in range(row, scarper.num_movies):
+
+        # sim_sum_spot starts at the self-referential sim_sum and moves right for each movie
+        if scarper.movie_list[row].similarity_list[sim_sum_spot] > len(pair_list):
+            for i in range(len(pair_list)-1, scarper.movie_list[row].similarity_list[sim_sum_spot]):
+                pair_list.append(0)
+        pair_list[scarper.movie_list[row].similarity_list[sim_sum_spot]] += 1
+
+for i in range(0, len(pair_list)):
+    print(i, end=" ")
+    print(pair_list[i])
+
+end = time.time()
+print(end-start)
+
+# stop self-comparing - throws off connection count
