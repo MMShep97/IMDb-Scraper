@@ -90,9 +90,7 @@ class IMDBScraper:
                 num_cast_members -= 1
 
         #CREATE MOVIE OBJECT
-        print(self.movie_index, end=" ")
-        print(movie_title, end=" ")
-        print(personnel_list)
+        self.movie_list.append(Film(movie_title, self.movie_index, personnel_list))
 
         #Add to movie_list
         self.movie_index += 1
@@ -140,4 +138,4 @@ for i in range(1, 2):  # (i = 0: i < X; i++)
         #create movie object
         scarper.scrape_movie(url)
 
-for movie1 in scarper.movie_list:
+#for movie1 in scarper.movie_list:
