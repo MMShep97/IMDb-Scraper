@@ -136,10 +136,7 @@ def compareMovies(movie1, movie2):
 
 scarper = IMDBScraper()
 
-f = Film("golf film", 0, [1, 2, 3])
-print(f.getTitle())
-print(f.getIndex())
-print(f.getPersonnelList())
+
 
 
 for i in range(1, 2):  # (i = 0: i < X; i++)
