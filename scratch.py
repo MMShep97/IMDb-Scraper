@@ -1,6 +1,5 @@
-x = [0, 2, 3, 4]
+text = "Writing Credits/n"
 
+text = text[0:15]
 
-print(scratch)
-for i in range(0, len(x)+1):
-    print(i)
+print(text)
